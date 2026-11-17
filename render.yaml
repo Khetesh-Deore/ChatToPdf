@@ -1,0 +1,26 @@
+# Render.com free-tier deployment config.
+# https://render.com/docs/blueprint-spec
+#
+# Free plan notes:
+#   - 512 MB RAM, shared CPU — keep MAX_CONCURRENT_JOBS=1 to stay within limits.
+#   - Instances spin down after 15 min of inactivity (free tier); first request
+#     after spin-down takes ~30 s while Chromium starts. Upgrade to Starter ($7/mo)
+#     to keep it always-on.
+#   - Persistent disk is not included on free tier; temp files are in-memory only,
+#     which is fine because the janitor deletes jobs after 30 min anyway.
+
+services:
+  - type: web
+    name: chat2pdf
+    runtime: docker
+    dockerfilePath: ./Dockerfile
+    plan: free          # change to "starter" to avoid spin-down
+    region: oregon      # pick the region closest to your users
+
+    envVars:
+      - key: PORT
+        value: "8000"
+
+    # Render injects PORT automatically; this tells it what port the container listens on.
+    # Must match the EXPOSE and CMD in the Dockerfile.
+    healthCheckPath: /api/health

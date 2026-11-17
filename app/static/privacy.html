@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Privacy — chat2pdf</title>
+<link rel="icon" href="favicon.ico" sizes="any">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="layout">
+    <header class="site-header">
+      <div class="header-inner">
+        <a href="/" class="wordmark">
+          <span class="wordmark-icon" aria-hidden="true">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect x="2" y="2" width="10" height="13" rx="1.5" stroke="currentColor" stroke-width="1.5" fill="none"/>
+              <path d="M5 6h4M5 9h4M5 12h2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+            </svg>
+          </span>
+          <span>chat2pdf</span>
+        </a>
+      </div>
+    </header>
+
+    <main class="prose-page">
+      <h1>Privacy</h1>
+      <p class="meta">Last updated: 2024</p>
+
+      <h2>What we process</h2>
+      <p>
+        When you submit a share link or upload an HTML file, the server fetches the
+        conversation content solely to convert it to PDF. No conversation text, images,
+        or metadata are stored beyond what is needed to complete your request.
+      </p>
+
+      <h2>Temporary files</h2>
+      <p>
+        Generated PDF files and intermediate HTML files are stored in temporary server
+        storage and deleted automatically after 30 minutes. They are not accessible to
+        other users.
+      </p>
+
+      <h2>Logs</h2>
+      <p>
+        The server logs the URL hostname and job status (success or error type) for
+        operational monitoring. It does not log conversation content, full URLs, or
+        personally identifying information.
+      </p>
+
+      <h2>Third-party services</h2>
+      <p>
+        This service does not use third-party analytics, advertising, or tracking scripts.
+        No data is sold or shared with third parties.
+      </p>
+
+      <h2>Uploaded files</h2>
+      <p>
+        HTML files you upload are processed in memory to extract conversation content and
+        are not persisted to disk beyond temporary processing. The resulting PDF follows
+        the same 30-minute retention policy.
+      </p>
+
+      <h2>Contact</h2>
+      <p>
+        If you have questions about how your data is handled, please open an issue on
+        the project repository.
+      </p>
+    </main>
+
+    <footer class="site-footer">
+      <div class="footer-inner">
+        <span>chat2pdf</span>
+        <nav>
+          <a href="/">Home</a>
+          <a href="terms.html">Terms</a>
+        </nav>
+      </div>
+    </footer>
+  </div>
+</body>
+</html>

@@ -1,0 +1,172 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ChatGPT to PDF</title>
+<link rel="icon" href="favicon.ico" sizes="any">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="layout">
+    <header class="site-header">
+      <div class="header-inner">
+        <div class="wordmark">
+          <span class="wordmark-icon" aria-hidden="true">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect x="2" y="2" width="10" height="13" rx="1.5" stroke="currentColor" stroke-width="1.5" fill="none"/>
+              <path d="M5 6h4M5 9h4M5 12h2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+              <path d="M13 8v9a1 1 0 0 0 1 1h2a1 1 0 0 0 1-1V8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M11.5 11.5l1.5-3.5 1.5 3.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </span>
+          <span>chat2pdf</span>
+        </div>
+        <nav class="header-links">
+          <a href="#how-it-works">How it works</a>
+          <a href="privacy.html">Privacy</a>
+        </nav>
+      </div>
+    </header>
+
+    <main class="main">
+      <section class="hero">
+        <h1>Convert a ChatGPT conversation to PDF</h1>
+        <p class="hero-desc">
+          Paste a public share link. The server fetches it, processes math,
+          code and images, and returns a clean A4 PDF — no account required.
+        </p>
+      </section>
+
+      <div class="converter-card">
+        <!-- Tab bar -->
+        <div class="tab-bar" role="tablist">
+          <button class="tab active" role="tab" aria-selected="true"
+                  aria-controls="panel-url" id="tab-url"
+                  onclick="switchTab('url')">
+            Share link
+          </button>
+          <button class="tab" role="tab" aria-selected="false"
+                  aria-controls="panel-file" id="tab-file"
+                  onclick="switchTab('file')">
+            Saved HTML file
+          </button>
+        </div>
+
+        <!-- URL panel -->
+        <div id="panel-url" role="tabpanel" aria-labelledby="tab-url" class="tab-panel">
+          <form id="form-url" novalidate>
+            <label for="url-input" class="field-label">Share link</label>
+            <div class="input-row">
+              <input
+                id="url-input"
+                type="url"
+                name="url"
+                autocomplete="off"
+                spellcheck="false"
+                placeholder="https://chatgpt.com/share/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+                aria-describedby="url-hint"
+              >
+              <button type="submit" id="btn-url">Convert</button>
+            </div>
+            <p class="field-hint" id="url-hint">
+              The link must be set to public in ChatGPT before sharing.
+            </p>
+          </form>
+        </div>
+
+        <!-- File panel -->
+        <div id="panel-file" role="tabpanel" aria-labelledby="tab-file"
+             class="tab-panel hidden">
+          <form id="form-file" enctype="multipart/form-data" novalidate>
+            <label for="file-input" class="field-label">HTML file</label>
+            <div class="file-drop-area" id="drop-area">
+              <input
+                id="file-input"
+                type="file"
+                name="file"
+                accept=".html,text/html"
+                aria-describedby="file-hint"
+              >
+              <div class="file-drop-label" id="drop-label" aria-live="polite">
+                <span>Drop file here or <span class="file-browse">browse</span></span>
+              </div>
+            </div>
+            <p class="field-hint" id="file-hint">
+              In your browser open the share link, then use
+              <kbd>File → Save Page As…</kbd> (complete HTML). Upload that file here.
+              Use this if the live fetch is blocked.
+            </p>
+            <button type="submit" id="btn-file" disabled>Convert</button>
+          </form>
+        </div>
+
+        <!-- Status area — shared between both forms -->
+        <div class="status-area" id="status-area" hidden>
+          <div class="status-row">
+            <span class="status-indicator" id="status-indicator" aria-hidden="true"></span>
+            <p class="status-text" id="status-text" role="status" aria-live="polite"></p>
+          </div>
+          <a id="download-link" class="btn-download" hidden
+             aria-label="Download the generated PDF">
+            Download PDF
+          </a>
+        </div>
+      </div>
+
+      <section class="how-it-works" id="how-it-works">
+        <h2>How it works</h2>
+        <ol class="steps">
+          <li>
+            <strong>Fetch.</strong>
+            The server opens the share page in a real browser (Chromium via Playwright),
+            waits for all content to render, then extracts each message.
+          </li>
+          <li>
+            <strong>Process.</strong>
+            Math formulas are recovered from KaTeX annotations and re-rendered.
+            Code blocks are syntax-highlighted. Images are downloaded, resized
+            and embedded.
+          </li>
+          <li>
+            <strong>Print.</strong>
+            The processed conversation is laid out in a clean chat template and
+            exported to A4 PDF with page numbers.
+          </li>
+        </ol>
+
+        <div class="caveats">
+          <h3>Known limitations</h3>
+          <ul>
+            <li>The link must be set to public in ChatGPT.</li>
+            <li>
+              ChatGPT may serve a bot-check page. If that happens, use the
+              <strong>Saved HTML file</strong> tab instead.
+            </li>
+            <li>
+              OpenAI can change the page markup at any time. If a live fetch
+              produces an empty PDF, the saved-file route is a reliable fallback.
+            </li>
+            <li>
+              Generated PDFs are deleted from the server after 30 minutes.
+              Download immediately after conversion.
+            </li>
+          </ul>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="footer-inner">
+        <span>chat2pdf — open source, no tracking, no storage of conversations</span>
+        <nav>
+          <a href="privacy.html">Privacy</a>
+          <a href="terms.html">Terms</a>
+        </nav>
+      </div>
+    </footer>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
